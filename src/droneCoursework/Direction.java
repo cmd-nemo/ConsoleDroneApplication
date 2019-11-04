@@ -4,13 +4,20 @@ import java.util.Random;
 
 public enum Direction {
     North, East, South, West;
-    public static Direction nextDir(Direction oldDirection) {
 
-    int index = Direction.valueOf(oldDirection.toString()).ordinal();
-    return Direction.values()[index+1 % Direction.values().length];
+    public static Direction fromString(String s) { // converts a String to a direction class
+        Direction d = Direction.valueOf(Direction.class, s);
+        return d;
     }
+
+
+    public Direction nextDir() {
+
+        return values()[(this.ordinal() + 1) % values().length];
+    }
+
     public static Direction randomDir() {
-        Random r = new Random();
-        return Direction.values()[r.nextInt(Direction.values().length)];
+        Random random = new Random();
+        return values()[random.nextInt(values().length)];
     }
 }

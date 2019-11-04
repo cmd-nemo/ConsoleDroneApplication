@@ -1,39 +1,54 @@
 package droneCoursework;
 
 public class ConsoleCanvas {
+    int width;
+    int height;
     char[][] arenaCanvas;
 
-    ConsoleCanvas(int x, int y) {
-        arenaCanvas = new char[x][y];
+    ConsoleCanvas(int width, int height) {
+        this.width = width;
+        this.height = height;
+        clearCanvas();
+    }
 
-        for(int i = 0; i < arenaCanvas.length; i++) {
-            for(int j = 0; j < arenaCanvas[i].length; j++) {
-                if(i==0 || j==0 || i==arenaCanvas.length-1 || j==arenaCanvas[i].length-1) {
-                    arenaCanvas[i][j] = '#';
-                }
-                else {
-                    arenaCanvas[i][j] = ' ';
-                }
+    public void clearCanvas() {
+        arenaCanvas = new char[width][height];
+        for (int x = 0; x < this.width; x++) {
+            for (int y = 0; y < this.height; y++) {
+                arenaCanvas[x][y] = ' ';
             }
         }
     }
+
     public String toString() {
         String builder = "";
-        for(int i = 0; i < arenaCanvas.length; i++) {
-            for(int j = 0; j < arenaCanvas[i].length; j++) {
-                builder+=arenaCanvas[i][j];
-            }
-            builder+="\n";
+        for (int x = 0; x < this.width + 2; x++) {
+            builder = builder + "#";
         }
+        builder = builder + "\n";
+        for (int y = 0; y < this.height; y++) {
+            builder = builder + "#";
+            for (int x = 0; x < this.width; x++) {
+                builder = builder + arenaCanvas[x][y];
+            }
+            builder = builder + "#\n";
+        }
+        for (int x = 0; x < this.width + 2; x++) {
+            builder = builder + "#";
+        }
+        builder = builder + "\n";
         return builder;
     }
 
     public void showIt(int x, int y, char c) {
         arenaCanvas[x][y] = c;
     }
+
     public static void main(String[] args) {
         ConsoleCanvas c = new ConsoleCanvas(10, 5);
-        c.showIt(4,3,'D');
+        c.showIt(4, 3, 'D');
         System.out.println(c.toString());
     }
+
+
 }
