@@ -1,20 +1,26 @@
 package droneCoursework;
 
+import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class DroneInterface {
     private Scanner s;                                // scanner used for input from user
     private DroneArena myArena;                // arena in which drones are sho
     DroneStorage ds;
-
+    private int xSize, ySize;
+    private Direction d;
 
     /**
      * constructor for DroneInterface
      * sets up scanner used for input and the arena
      * then has main loop allowing user to enter commands
      */
-    public DroneInterface() throws InterruptedException {
+    public DroneInterface() throws InterruptedException, IOException {
         s = new Scanner(System.in);            // set up scanner for user input
         myArena = new DroneArena(20, 20);    // create arena of size 20*6
         ds = new DroneStorage();
@@ -49,8 +55,13 @@ public class DroneInterface {
                 case 'b':
                     newArena();
                     break;
+                case 'O':
+                case 'o':
+                    openFile();
+                    break;
+                case 'V':
                 case 'v':
-                    try{
+                    try {
                         ds.Save(ds.objectToString(myArena)); //saves
 
                     } catch (IOException e) {
@@ -63,10 +74,17 @@ public class DroneInterface {
         s.close();                                    // close scanner
     }
 
-    void loadArenaFromFile(){
+    void loadArenaFromFile() {
         String str = ds.objectToString(myArena);
 
         ds.stringToObject(str); //
+    }
+
+    void loadFileFromString() {
+        Scanner sc = new Scanner(System.in);  // Create a Scanner object
+        System.out.print("Enter the name for the arena: ");
+        String params = sc.nextLine();
+
     }
 
     public void moveAllDrones(int nTimes) throws InterruptedException {
@@ -99,7 +117,7 @@ public class DroneInterface {
         }
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         DroneInterface r = new DroneInterface();
         // just call the interface
     }
@@ -108,5 +126,40 @@ public class DroneInterface {
         ConsoleCanvas c = new ConsoleCanvas(myArena.getX(), myArena.getY());
         myArena.showDrones(c);
         System.out.println(c.toString());
+    }
+
+    public void openFile() throws IOException {
+        JFileChooser chooser = new JFileChooser(); //  creates File Chooser
+        int returnVal = chooser.showOpenDialog(null); // opens OPEN dialog
+
+        String line;
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File selFile = chooser.getSelectedFile();
+            BufferedReader fileReader = new BufferedReader(new FileReader(selFile)); //Opens file
+
+            line = fileReader.readLine(); // reads first line from array
+
+            String[] infoLine = line.split(","); // Creates array of arena info
+
+            this.xSize = Integer.parseInt(infoLine[0]); // assigns width
+            this.ySize = Integer.parseInt(infoLine[1]); // assigns height
+            myArena = new DroneArena(xSize, ySize); // creates arena of size decided by file
+
+
+            while ((line = fileReader.readLine()) != null) // end when the line is blank
+            {
+                infoLine = line.split(","); // separate onto different drones arguments
+                System.out.println(Arrays.toString(infoLine));
+                int x = Integer.parseInt(infoLine[0]); //deriving coordinate x
+                int y = Integer.parseInt(infoLine[1]); //deriving coordinate y
+                String dir = infoLine[2]; //deriving direction
+
+                d = d.valueOf(dir.toUpperCase());
+                myArena.addDrone(x, y, d); // creates drone from data
+            }
+            fileReader.close();
+        }
+
     }
 }

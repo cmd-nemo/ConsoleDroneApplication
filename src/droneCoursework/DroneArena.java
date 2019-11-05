@@ -51,6 +51,9 @@ public class DroneArena {
             drones.add(new Drone(xPosition, yPosition, drones.size() + 1, direction));
         }
     }
+    public void addDrone(int x, int y, Direction d ){
+        drones.add(new Drone(x, y, drones.size() + 1, d));
+    }
 
     public Drone getDroneAt(int x, int y, Direction dir) {
         for (Drone d : drones) {
