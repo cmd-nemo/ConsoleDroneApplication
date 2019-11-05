@@ -1,9 +1,4 @@
-20,20
-1,8,North
-19,13,South
-6,19,East
-18,6,South
-12,19,East
-5,12,West
-15,9,North
-18,8,South
+35,35
+4,8,South
+9,3,East
+5,14,North

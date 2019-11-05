@@ -155,7 +155,7 @@ public class DroneInterface {
                 int y = Integer.parseInt(infoLine[1]); //deriving coordinate y
                 String dir = infoLine[2]; //deriving direction
 
-                d = d.valueOf(dir.toUpperCase());
+                d = d.valueOf(dir);
                 myArena.addDrone(x, y, d); // creates drone from data
             }
             fileReader.close();
